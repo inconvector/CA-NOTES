@@ -5,23 +5,55 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Notes</title>
     <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh; /* Full height of the viewport */
+            margin: 0;
+            
+        }
+        
         h1 {
             text-align: center;
             color: rgb(85, 85, 252);
+            margin-bottom: 20px; /* Space below the heading */
         }
-        a{
+        
+        a {
             text-decoration: none;
-            padding: 10%;
         }
-        button{
+        
+        button {
             color: black;
+            padding: 10px 20px; /* Padding for the button */
+            border: 2px solid rgb(85, 85, 252); /* Border color */
+            border-radius: 5px; /* Rounded corners */
+            background-color: white; /* Button background */
+            cursor: pointer; /* Pointer cursor on hover */
+            transition: background-color 0.3s; /* Smooth transition */
+        }
+        
+        button:hover {
+            background-color: rgb(85, 85, 252); /* Change background on hover */
+            color: white; /* Change text color on hover */
+        }
+        
+        div {
+            display: flex;
+            flex-direction: row; /* Display buttons horizontally */
+            align-items: center; /* Center buttons */
+            gap: 10px; /* Spacing between buttons */
         }
     </style>
 </head>
 <body>
     <h1>Notes</h1>
-    <a href=""><button>Financial Reporting</button></a>
-    <a href=""><button>Advanced Financial Management</button></a>
-    <a href=""><button>Advanced Auditing, Assurance and Professional Ethics </button></a>
+    <div>
+        <a href=""><button>Financial Reporting</button></a>
+        <a href=""><button>Advanced Financial Management</button></a>
+        <a href=""><button>Audit</button></a>
+    </div>
 </body>
 </html>
