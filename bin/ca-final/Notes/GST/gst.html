@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Indirect TAX — Perfect Grid Alignment</title>
+  <title>Indirect TAX — Perfect Grid Alignment (fixed borders)</title>
 
   <style>
     :root {
@@ -15,9 +15,7 @@
       --font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       font-family: var(--font);
@@ -34,12 +32,12 @@
       background: #fff;
     }
 
-    /* Consistent grid template for header and rows */
+    /* Keep one consistent grid template for header and rows */
     .grid-header,
     .grid-row {
       display: grid;
       grid-template-columns: 80px 1fr 120px 120px;
-      align-items: center;
+      align-items: stretch; /* critical: make every cell equal height */
     }
 
     /* HEADER */
@@ -49,61 +47,46 @@
       border-bottom: 1px solid var(--border);
     }
 
+    /* make header cells use flex so text centers vertically */
     .grid-header > div {
+      display: flex;
+      align-items: center;
       padding: 12px 16px;
       text-align: center;
       border-right: 1px solid var(--border);
+      min-height: 44px; /* keep consistent with body rows */
     }
-
-    .grid-header > div:nth-child(2) {
-      text-align: left;
-    }
-
-    .grid-header > div:last-child {
-      border-right: none;
-    }
+    .grid-header > div:nth-child(2) { text-align: left; }
+    .grid-header > div:last-child { border-right: none; }
 
     /* BODY */
-    .grid-body {
-      display: block;
-    }
+    .grid-body { display: block; }
 
+    /* each row is a grid; align-items:stretch ensures children match heights */
     .grid-row {
       border-bottom: 1px solid var(--border);
     }
+    .grid-row:last-child { border-bottom: none; }
 
-    .grid-row:last-child {
-      border-bottom: none;
-    }
-
+    /* each cell is a flex container and stretches to fill row height */
     .grid-row > .cell {
-      padding: 12px 16px;
-      border-right: 1px solid var(--border);
       display: flex;
       align-items: center;
+      padding: 12px 16px;
+      border-right: 1px solid var(--border);
+      min-height: 44px;
+      word-break: break-word; /* prevent overflow */
     }
+    .grid-row > .cell:last-child { border-right: none; }
 
-    .grid-row > .cell:last-child {
-      border-right: none;
-    }
+    /* alignment specificities */
+    .cell.sno { justify-content: center; text-align: center; font-weight: 600; }
+    .cell.chapter { justify-content: flex-start; }
 
-    /* Center SNO column */
-    .cell.sno {
-      justify-content: center;
-      text-align: center;
-      font-weight: 600;
-    }
-
-    /* Chapter left aligned */
-    .cell.chapter {
-      justify-content: flex-start;
-    }
-
-    /* Responsive layout */
+    /* If any .cell has multiple lines, all cells still match height because of align-items:stretch */
+    /* ---------- Responsive ---------- */
     @media (max-width: 600px) {
-      .grid-header {
-        display: none;
-      }
+      .grid-header { display: none; }
 
       .grid-row {
         grid-template-columns: 1fr;
@@ -118,10 +101,7 @@
         border-bottom: 1px solid var(--border);
         padding: 10px 16px;
       }
-
-      .grid-row > .cell:last-child {
-        border-bottom: none;
-      }
+      .grid-row > .cell:last-child { border-bottom: none; }
 
       .grid-row > .cell::before {
         content: attr(data-label);
@@ -132,13 +112,11 @@
         min-width: 90px;
       }
 
-      .cell.sno::before {
-        display: none;
-      }
+      .cell.sno::before { display: none; }
+      .cell.sno { justify-content: center; }
 
-      .cell.sno {
-        justify-content: center;
-      }
+      .grid-row > .cell > span { display: inline-block; width: 60%; word-break: break-word; text-align: left; }
+      .cell.sno > span { width: 100%; text-align: center; }
     }
   </style>
 </head>
@@ -163,17 +141,51 @@
         <div class="cell link" data-label="Link"><span>-</span></div>
       </div>
 
+      <!-- Supply  -->
       <div class="grid-row" role="row">
         <div class="cell sno" data-label="S NO"><span>2</span></div>
         <div class="cell chapter" data-label="Chapter"><span>Supply</span></div>
-        <div class="cell sec" data-label="Sec No"><span>7–8</span></div>
+        <div class="cell sec" data-label="Sec No"><span>7 to 8</span></div>
         <div class="cell link" data-label="Link"><span>-</span></div>
       </div>
 
+      <!-- Levy -->
       <div class="grid-row" role="row">
         <div class="cell sno" data-label="S NO"><span>3</span></div>
         <div class="cell chapter" data-label="Chapter"><span>Levy</span></div>
         <div class="cell sec" data-label="Sec No"><span>11</span></div>
+        <div class="cell link" data-label="Link"><span>-</span></div>
+      </div>
+
+      <!-- Exemptions -->
+      <div class="grid-row" role="row">
+        <div class="cell sno" data-label="S NO"><span>4</span></div>
+        <div class="cell chapter" data-label="Chapter"><span>Exemptions under GST</span></div>
+        <div class="cell sec" data-label="Sec No"><span></span></div>
+        <div class="cell link" data-label="Link"><span>-</span></div>
+      </div>
+
+      <!-- TOS  -->
+      <div class="grid-row" role="row">
+        <div class="cell sno" data-label="S NO"><span>5</span></div>
+        <div class="cell chapter" data-label="Chapter"><span>Time of Supply</span></div>
+        <div class="cell sec" data-label="Sec No"><span></span></div>
+        <div class="cell link" data-label="Link"><span>-</span></div>
+      </div>
+
+      <!-- POS -->
+      <div class="grid-row" role="row">
+        <div class="cell sno" data-label="S NO"><span>6</span></div>
+        <div class="cell chapter" data-label="Chapter"><span>Place of Supply</span></div>
+        <div class="cell sec" data-label="Sec No"><span>10-13 IGST</span></div>
+        <div class="cell link" data-label="Link"><span>-</span></div>
+      </div>
+
+      <!-- VOS -->
+      <div class="grid-row" role="row">
+        <div class="cell sno" data-label="S NO"><span>7</span></div>
+        <div class="cell chapter" data-label="Chapter"><span>Value of supply</span></div>
+        <div class="cell sec" data-label="Sec No"><span></span></div>
         <div class="cell link" data-label="Link"><span>-</span></div>
       </div>
     </div>
