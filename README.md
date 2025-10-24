@@ -1,2 +1,2 @@
 # CA-NOTES
-To share resources for CA &amp; CA Students
+To share resources for CA's &amp; CA Students
